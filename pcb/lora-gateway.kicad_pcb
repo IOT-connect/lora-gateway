@@ -668,10 +668,15 @@
       (net 11 "GND") (pinfunction "Ext") (pintype "passive") (tstamp 7cdd2236-e06b-4657-9d46-1b4f6717fc00))
     (pad "2" smd rect (at 0 3.4925) (size 4.19 2.665) (layers "B.Cu" "B.Paste" "B.Mask")
       (net 11 "GND") (pinfunction "Ext") (pintype "passive") (tstamp d69df8f7-272a-44ab-99bc-cf076f1da621))
-    (model "${KICAD6_3DMODEL_DIR}/Connector_Coaxial.3dshapes/SMA_Molex_73251-2120_EdgeMount_Horizontal.wrl"
+    (model "${KICAD6_3DMODEL_DIR}/Connector_Coaxial.3dshapes/SMA_Molex_73251-2120_EdgeMount_Horizontal.wrl" hide
       (offset (xyz 0 0 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
+    )
+    (model "C:/Users/bigfo/Downloads/138833138-3-5449692-1/5449692-1.stp"
+      (offset (xyz 14 0 0.5))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 90 0 90))
     )
   )
 
@@ -1134,10 +1139,15 @@
       (net 107 "unconnected-(U1-DIO1-Pad15)") (pinfunction "DIO1") (pintype "bidirectional") (tstamp 14242252-602d-4f24-8712-c3aed47d8339))
     (pad "16" smd rect (at 8 -7) (size 2 1) (layers "F.Cu" "F.Paste" "F.Mask")
       (net 108 "unconnected-(U1-DIO2-Pad16)") (pinfunction "DIO2") (pintype "bidirectional") (tstamp 706c9989-d4c9-4e41-bc8c-fe207680ed18))
-    (model "${KICAD6_3DMODEL_DIR}/RF_Module.3dshapes/HOPERF_RFM9XW_SMD.wrl"
+    (model "${KICAD6_3DMODEL_DIR}/RF_Module.3dshapes/HOPERF_RFM9XW_SMD.wrl" hide
       (offset (xyz 0 0 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
+    )
+    (model "C:/Users/bigfo/Downloads/RFM95W-915S2--3DModel-STEP-56544.STEP"
+      (offset (xyz 0 0 0))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 90 180 0))
     )
   )
 
