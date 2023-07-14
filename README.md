@@ -16,5 +16,5 @@
 
 ### TODO
 
--[ ] Add RTC
--[ ] Add temperature sensor
+- [ ] Add RTC
+- [ ] Add temperature sensor
