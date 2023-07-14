@@ -8,11 +8,11 @@
 
 #### pcb view
 
-![3d](pcb/pcb.png)
+![pcb](pcb/pcb.png)
 
 #### schematic view
 
-![3d](pcb/schematic.png)
+![schematic](pcb/schematic.png)
 
 ### TODO
 
