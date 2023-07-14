@@ -15,3 +15,6 @@
 ![3d](pcb/schematic.png)
 
 ### TODO
+
+-[ ] Add RTC
+-[ ] Add temperature sensor
