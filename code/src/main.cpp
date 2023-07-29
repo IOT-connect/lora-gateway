@@ -1,73 +1,59 @@
 #include <Arduino.h>
-#include "Ethernet_Generic.h"
+#include <SPI.h>
+#include <Ethernet3.h>
+#include <EthernetUdp3.h>
 
-#define NUMBER_OF_MAC      20
+#include <SoftwareSerial.h>
+SoftwareSerial Serial5(A5,A6);
 
-byte mac[][NUMBER_OF_MAC] =
-{
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x01 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xBE, 0x02 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x03 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xBE, 0x04 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x05 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xBE, 0x06 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x07 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xBE, 0x08 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x09 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xBE, 0x0A },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x0B },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xBE, 0x0C },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x0D },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xBE, 0x0E },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x0F },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xBE, 0x10 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x11 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xBE, 0x12 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x13 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xBE, 0x14 },
+byte mac[] = {
+  0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
 };
-
-
-#define USE_THIS_SS_PIN       8
-#define SENDCONTENT_P_BUFFER_SZ     512
-#define BOARD_TYPE            "AVR Mega"
-#define MY_DHCP_HOSTNAME      "My_DHCP_Hostname"
 
 unsigned int localPort = 1883;    //10002;  // local port to listen on
 
-char packetBuffer[255];          // buffer to hold incoming packet
-char ReplyBuffer[] = "ACK";      // a string to send back
+char packetBuffer[UDP_TX_PACKET_MAX_SIZE]; //buffer to hold incoming packet,
+char ReplyBuffer[] = "acknowledged";       // a string to send back
 
 EthernetUDP Udp;
 
-
 void setup() {
+  Serial5.begin(9600);
+  delay(5000);
+  Ethernet.setCsPin(PIN_PB0);
+  Ethernet.begin(mac);
 
-
-  Ethernet.init(USE_THIS_SS_PIN);
-  Ethernet.setHostname(MY_DHCP_HOSTNAME);
-  uint16_t index = millis() % NUMBER_OF_MAC;
-  Ethernet.begin(mac[index]);
-  
   Udp.begin(2000);
+  Serial5.println(Ethernet.localIP());
 }
 
 void loop() {
-int packetSize = Udp.parsePacket();
-
+  int packetSize = Udp.parsePacket();
   if (packetSize)
   {
-    // read the packet into packetBufffer
-    int len = Udp.read(packetBuffer, 255);
-
-    if (len > 0)
+    Serial5.print("Received packet of size ");
+    Serial5.println(packetSize);
+    Serial5.print("From ");
+    IPAddress remote = Udp.remoteIP();
+    for (int i = 0; i < 4; i++)
     {
-      packetBuffer[len] = 0;
+      Serial5.print(remote[i], DEC);
+      if (i < 3)
+      {
+        Serial5.print(".");
+      }
     }
+    Serial5.print(", port ");
+    Serial5.println(Udp.remotePort());
+
+    Udp.read(packetBuffer, UDP_TX_PACKET_MAX_SIZE);
+    Serial5.println("Contents:");
+    Serial5.println(packetBuffer);
 
     // send a reply, to the IP address and port that sent us the packet we received
     Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
     Udp.write(ReplyBuffer);
     Udp.endPacket();
   }
+  delay(10);
 }
