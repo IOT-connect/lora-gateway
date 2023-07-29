@@ -2,6 +2,7 @@
 #include <SPI.h>
 #include <Ethernet3.h>
 #include <EthernetUdp3.h>
+#include <RadioLib.h>
 
 #include <SoftwareSerial.h>
 SoftwareSerial Serial5(A5,A6);
@@ -16,14 +17,28 @@ char packetBuffer[UDP_TX_PACKET_MAX_SIZE]; //buffer to hold incoming packet,
 char ReplyBuffer[] = "acknowledged";       // a string to send back
 
 EthernetUDP Udp;
+RFM95 radio = new Module(19, 0, 0, 0);
 
 void setup() {
   Serial5.begin(9600);
-  delay(5000);
+  delay(2000);
   Ethernet.setCsPin(PIN_PB0);
   Ethernet.begin(mac);
 
   Udp.begin(2000);
+
+  Serial.print(F("[SX1278] Initializing ... "));
+  int state = radio.begin(868.0);
+  if (state == RADIOLIB_ERR_NONE) {
+    Serial5.println(F("success!"));
+  } else {
+    Serial5.print(F("failed, code "));
+    Serial5.println(state);
+    while (true);
+  }
+
+
+
   Serial5.println(Ethernet.localIP());
 }
 
