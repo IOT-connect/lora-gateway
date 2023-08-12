@@ -5,6 +5,10 @@
 #include <RadioLib.h>
 
 #include <SoftwareSerial.h>
+
+#define LED1 PIN_PA6
+#define LED2 PIN_PA7
+
 SoftwareSerial Serial5(A5,A6);
 
 byte mac[] = {
@@ -20,6 +24,7 @@ EthernetUDP Udp;
 RFM95 radio = new Module(19, 0, 0, 0);
 
 void setup() {
+  pinMode(LED1, OUTPUT);
   Serial5.begin(9600);
   delay(2000);
   Ethernet.setCsPin(PIN_PB0);
